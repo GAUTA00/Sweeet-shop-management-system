@@ -63,3 +63,15 @@ export const deleteSweet = async (req, res) => {
     });
   }
 };
+//Controller to Get all sweets
+export const getAllSweets = async (req, res) => {
+  try {
+    const allSweets = await Sweet.find();
+    res.status(200).json(allSweets);
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error while retrieving sweets',
+      error: error.message
+    });
+  }
+};
