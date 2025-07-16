@@ -47,3 +47,48 @@ describe('Sweet API - Add Sweet api', () => {
 
 });
 
+describe('Sweet API - Update Sweet', () => {
+    let sweetId;
+    beforeAll(async () => {
+        // First,we'll create a sweet to update
+        const sweet = await request(app)
+            .post('/api/v1/addSweets')
+            .send({
+                name: 'Gulab Jamun',
+                category: 'Milk-Based',
+                price: 30,
+                quantity: 40
+            });
+        // console.log("Created sweet response:", sweet.body); // Log the response for debugging
+        sweetId = sweet.body.sweet?._id || sweet.body._id || 'undefined';
+    });
+
+    it('should update the sweet and return status 200', async () => {
+        const response = await request(app)
+            .put(`/api/v1/updateSweet/${sweetId}`)
+            .send({
+                name: 'Updated Gulab Jamun',
+                category: 'Milk-Based',
+                price: 35,
+                quantity: 45
+            });
+        expect(response.statusCode).toBe(200);
+        expect(response.body.sweet).toHaveProperty('name', 'Updated Gulab Jamun');
+        expect(response.body.sweet).toHaveProperty('price', 35);
+        expect(response.body.sweet).toHaveProperty('quantity', 45);
+    });
+
+    it('should return 404 if sweet to update does not exist', async () => {
+        const fakeId = '64e129ac7b12345678901234'; // valid MongoDB ObjectId format
+        const response = await request(app)
+            .put(`/api/v1/updateSweet/${fakeId}`)
+            .send({
+                name: 'Non-existent Sweet',
+                category: 'Candy',
+                price: 99,
+                quantity: 10
+            });
+        expect(response.statusCode).toBe(404);
+        expect(response.body.message).toBe('Sweet not found');
+    });
+});
