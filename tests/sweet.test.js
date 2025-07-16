@@ -59,7 +59,7 @@ describe('Sweet API - Update Sweet', () => {
                 price: 30,
                 quantity: 40
             });
-        // console.log("Created sweet response:", sweet.body); // Log the response for debugging
+        // console.log("Created sweet response:", sweet.body);
         sweetId = sweet.body.sweet?._id || sweet.body._id || 'undefined';
     });
 
@@ -79,7 +79,7 @@ describe('Sweet API - Update Sweet', () => {
     });
 
     it('should return 404 if sweet to update does not exist', async () => {
-        const fakeId = '64e129ac7b12345678901234'; // valid MongoDB ObjectId format
+        const fakeId = '64e129ac7b12345678901234';
         const response = await request(app)
             .put(`/api/v1/updateSweet/${fakeId}`)
             .send({
@@ -88,6 +88,36 @@ describe('Sweet API - Update Sweet', () => {
                 price: 99,
                 quantity: 10
             });
+        expect(response.statusCode).toBe(404);
+        expect(response.body.message).toBe('Sweet not found');
+    });
+});
+
+describe('Sweet API - Delete Sweet', () => {
+    let sweetId;
+    beforeAll(async () => {
+        // Create a sweet to delete
+        const sweet = await request(app)
+            .post('/api/v1/addSweets')
+            .send({
+                name: 'Delete Me',
+                category: 'Candy',
+                price: 15,
+                quantity: 10
+            });
+        sweetId = sweet.body.sweet._id;
+    });
+
+    it('should delete the sweet and return status 200', async () => {
+        const response = await request(app)
+            .delete(`/api/v1/deleteSweet/${sweetId}`);
+        expect(response.statusCode).toBe(200);
+        expect(response.body.message).toBe('Sweet deleted successfully');
+    });
+
+    it('should return 404 if sweet is already deleted or not found', async () => {
+        const response = await request(app)
+            .delete(`/api/v1/deleteSweet/${sweetId}`);
         expect(response.statusCode).toBe(404);
         expect(response.body.message).toBe('Sweet not found');
     });
