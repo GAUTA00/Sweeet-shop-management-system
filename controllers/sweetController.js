@@ -93,3 +93,38 @@ export const searchSweets = async (req, res) => {
     res.status(500).json({ message: 'Error while searching sweets', error: error.message });
   }
 };
+// Controller to handle purchasing and restocking sweets
+export const purchaseSweet = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { quantity } = req.body;
+    const sweet = await Sweet.findById(id);
+    if (!sweet) {
+      return res.status(404).json({ message: 'Sweet not found' });
+    }
+    if (quantity > sweet.quantity) {
+      return res.status(400).json({ message: 'Not enough stock available' });
+    }
+    sweet.quantity -= quantity;
+    await sweet.save();
+    res.status(200).json({ message: 'Sweet purchased successfully', sweet });
+  } catch (error) {
+    res.status(500).json({ message: 'Error while purchasing sweet', error: error.message });
+  }
+};
+
+export const restockSweet = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { quantity } = req.body;
+    const sweet = await Sweet.findById(id);
+    if (!sweet) {
+      return res.status(404).json({ message: 'Sweet not found' });
+    }
+    sweet.quantity += quantity;
+    await sweet.save();
+    res.status(200).json({ message: 'Sweet restocked successfully', sweet });
+  } catch (error) {
+    res.status(500).json({ message: 'Error while restocking sweet', error: error.message });
+  }
+};
