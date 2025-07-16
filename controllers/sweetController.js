@@ -44,4 +44,22 @@ export const updateSweet = async (req, res) => {
     });
   }
 };
-
+// Controller to delete a sweet
+export const deleteSweet = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedSweet = await Sweet.findByIdAndDelete(id);
+    if (!deletedSweet) {
+      return res.status(404).json({ message: 'Sweet not found' });
+    }
+    res.status(200).json({
+      message: 'Sweet deleted successfully',
+      sweet: deletedSweet
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error while deleting sweet',
+      error: error.message
+    });
+  }
+};
