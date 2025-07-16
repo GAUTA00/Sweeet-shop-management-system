@@ -86,7 +86,9 @@ export const getAllSweets = async (req, res) => {
     });
   }
 };
+
 // Controller to Search sweets by category or name and sort them
+// Below searchSweets is AI Assisted code
 export const searchSweets = async (req, res) => {
   try {
     const { name, category, sortBy, order } = req.query;
