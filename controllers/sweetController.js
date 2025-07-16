@@ -6,6 +6,17 @@ export const addSweet = async (req, res) => {
     const { name, category, price, quantity } = req.body;
     const numericQuantity = Number(quantity);
     const numericPrice = Number(price);
+    // Check if sweet with same name and category exists
+    let existingSweet = await Sweet.findOne({ name, category });
+    if (existingSweet) {
+      existingSweet.quantity += numericQuantity;
+      existingSweet.price = numericPrice;
+      await existingSweet.save();
+      return res.status(200).json({
+        message: 'Sweet already exists, quantity updated Successfully',
+        sweet: existingSweet
+      });
+    }
     const sweetId = generateNumericId();
     const newSweet = new Sweet({ sweetId, name, category, price: numericPrice, quantity: numericQuantity });
     await newSweet.save();
