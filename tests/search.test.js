@@ -45,11 +45,11 @@ describe('Sweet API - Search and Sort', () => {
   });
 
   it('should return sweets filtered by name', async () => {
-    const res = await request(app).get('/api/v1/searchSweets?name=Rasgulla');
+    const res = await request(app).get('/api/v1/searchSweets?name=Rasmalai');
 
     expect(res.statusCode).toBe(200);
     expect(res.body.sweets.length).toBeGreaterThanOrEqual(1);
-    expect(res.body.sweets[0].name).toBe('Rasgulla');
+    expect(res.body.sweets[0].name).toBe('Rasmalai');
   });
 
   it('should return sweets sorted by price ascending', async () => {
@@ -68,5 +68,4 @@ describe('Sweet API - Search and Sort', () => {
     const sorted = [...qty].sort((a, b) => b - a);
     expect(qty).toEqual(sorted);
   });
-
 });

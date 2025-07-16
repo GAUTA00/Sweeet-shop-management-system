@@ -75,3 +75,21 @@ export const getAllSweets = async (req, res) => {
     });
   }
 };
+// Controller to Search sweets by category or name and sort them
+export const searchSweets = async (req, res) => {
+  try {
+    const { name, category, sortBy, order } = req.query;
+    const filter = {};
+    if (name) filter.name = new RegExp(name, 'i');
+    if (category) filter.category = category;
+    let sort = {};
+    if (sortBy && ['price', 'quantity'].includes(sortBy)) {
+      sort[sortBy] = order === 'desc' ? -1 : 1;
+    }
+    const sweets = await Sweet.find(filter).sort(sort);
+    res.status(200).json({ sweets });
+  } catch (error) {
+    console.error("Error in searchSweets:", error);
+    res.status(500).json({ message: 'Error while searching sweets', error: error.message });
+  }
+};
