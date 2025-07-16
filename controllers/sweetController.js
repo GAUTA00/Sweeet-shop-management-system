@@ -20,4 +20,28 @@ export const addSweet = async (req, res) => {
     });
   }
 };
+//Controller to Update a sweet details 
+export const updateSweet = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, category, price, quantity } = req.body;
+    const updatedSweet = await Sweet.findByIdAndUpdate(
+      id,
+      { name, category, price, quantity },
+      { new: true }
+    );
+    if (!updatedSweet) {
+      return res.status(404).json({ message: 'Sweet not found' });
+    }
+    res.status(200).json({
+      message: 'Sweet updated successfully',
+      sweet: updatedSweet
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error while updating sweet',
+      error: error.message
+    });
+  }
+};
 
