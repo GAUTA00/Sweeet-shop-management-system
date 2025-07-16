@@ -4,7 +4,7 @@ import request from 'supertest';
 import app from '../app.js';
 
 beforeAll(async () => {
-    await mongoose.connect('mongodb+srv://gautamprajapati31012004:BSPq2gHNEBEzaaBg@cluster0.d6y0tta.mongodb.net/sweetshop', {});
+    await mongoose.connect('mongodb://localhost:27017/sweetshop', {});
 });
 
 afterAll(async () => {
