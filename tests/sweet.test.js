@@ -122,3 +122,33 @@ describe('Sweet API - Delete Sweet', () => {
         expect(response.body.message).toBe('Sweet not found');
     });
 });
+describe('Sweet API - View All Sweets', () => {
+    beforeAll(async () => {
+        // let we create 2 sweet for demo testing
+        await request(app).post('/api/v1/addSweets').send({
+            name: 'Kaju Katli',
+            category: 'Nut-Based',
+            price: 50,
+            quantity: 100
+        });
+        await request(app).post('/api/v1/addSweets').send({
+            name: 'Barfi',
+            category: 'Milk-Based',
+            price: 30,
+            quantity: 80
+        });
+    });
+
+    it('should return a list of all sweets', async () => {
+        const response = await request(app).get('/api/v1/getSweets');
+        expect(response.statusCode).toBe(200);
+        expect(Array.isArray(response.body)).toBe(true);
+        expect(response.body.length).toBeGreaterThanOrEqual(2);
+        const sweet = response.body[0];
+        expect(sweet).toHaveProperty('name');
+        expect(sweet).toHaveProperty('category');
+        expect(sweet).toHaveProperty('price');
+        expect(sweet).toHaveProperty('quantity');
+        expect(sweet).toHaveProperty('sweetId');
+    });
+});
