@@ -12,8 +12,8 @@ const sweetSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    required: [true, 'Sweet category is required'],
-    enum: ['Nut-Based', 'Milk-Based', 'Vegetable-Based', 'Chocolate', 'Candy', 'Pastry'],
+    required: true,
+    trim: true
   },
   price: {
     type: Number,

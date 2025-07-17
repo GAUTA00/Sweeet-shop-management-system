@@ -6,31 +6,41 @@ export const addSweet = async (req, res) => {
     const { name, category, price, quantity } = req.body;
     const numericQuantity = Number(quantity);
     const numericPrice = Number(price);
-    // Check if sweet with same name and category exists
+    if (!name || !category || isNaN(numericPrice) || isNaN(numericQuantity)) {
+      return res.status(400).json({ message: "Invalid input data." });
+    }
     let existingSweet = await Sweet.findOne({ name, category });
     if (existingSweet) {
       existingSweet.quantity += numericQuantity;
       existingSweet.price = numericPrice;
       await existingSweet.save();
       return res.status(200).json({
-        message: 'Sweet already exists, quantity updated Successfully',
+        message: "Sweet already exists, quantity updated Successfully",
         sweet: existingSweet
       });
     }
     const sweetId = generateNumericId();
-    const newSweet = new Sweet({ sweetId, name, category, price: numericPrice, quantity: numericQuantity });
+    const newSweet = new Sweet({
+      sweetId,
+      name,
+      category,
+      price: numericPrice,
+      quantity: numericQuantity
+    });
     await newSweet.save();
     res.status(201).json({
-      message: 'Sweet added successfully',
+      message: "Sweet added successfully",
       sweet: newSweet
     });
   } catch (error) {
+    // console.error("Error in addSweet:", error);
     res.status(500).json({
-      message: 'Error while adding sweet to the shop',
+      message: "Error while adding sweet to the shop",
       error: error.message
     });
   }
 };
+
 //Controller to Update a sweet details 
 export const updateSweet = async (req, res) => {
   try {
@@ -125,7 +135,6 @@ export const purchaseSweet = async (req, res) => {
     res.status(500).json({ message: 'Error while purchasing sweet', error: error.message });
   }
 };
-
 export const restockSweet = async (req, res) => {
   try {
     const { id } = req.params;
