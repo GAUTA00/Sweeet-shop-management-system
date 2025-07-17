@@ -3,6 +3,16 @@
 The **Sweet Shop Management System** is a complete backend solution built using Node.js, Express, and MongoDB. It is designed to manage a sweet shop's inventory efficiently, allowing for CRUD operations, stock tracking, search/sort functionality, and purchase/restock actions.
 
 ---
+## 🌐 Live Deployment
+
+- **Frontend:** [https://sweet-shop-frontend-nine.vercel.app/](https://sweet-shop-frontend-nine.vercel.app/)
+- **Backend:** [https://sweeet-shop-management-system.onrender.com](https://sweeet-shop-management-system.onrender.com)
+
+---
+
+## 📦 API Endpoints
+
+**Base URL**: `https://sweeet-shop-management-system.onrender.com/api/v1`
 
 ## ✨ Features
 
@@ -44,7 +54,7 @@ The **Sweet Shop Management System** is a complete backend solution built using 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/sweet-shop-backend.git
+git clone https://github.com/GAUTA00/Sweeet-shop-management-system.git
 cd sweet-shop-backend
 ```
 
